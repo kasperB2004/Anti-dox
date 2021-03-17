@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BotListAPI" Version="5.5.2" />
     <PackageReference Include="Discord.Addons.PassiveInteractive" Version="2.0.4" />
     <PackageReference Include="Discord.Net" Version="2.3.0" />
     <PackageReference Include="Discord.Net.Commands" Version="2.3.0" />

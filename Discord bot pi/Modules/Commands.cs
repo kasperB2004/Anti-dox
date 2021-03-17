@@ -19,6 +19,9 @@ using Discord.WebSocket;
 
 using Discord.Net;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using Discord_bot_pi.Services;
+
 
 namespace Discord_bot_pi.Modules
 {
@@ -26,35 +29,40 @@ namespace Discord_bot_pi.Modules
     public class Commands : ModuleBase<SocketCommandContext>
     {
 
+
+        private readonly EmbedBuilder _embed;
         private readonly IConfiguration _config;
         private readonly IServiceProvider _services;
         public Commands(IServiceProvider services)
         {
+
             _config = services.GetRequiredService<IConfiguration>();
             _services = services;
+            _embed = new EmbedBuilder();
+
         }
-        [Command("ping")]
-        public async Task HelloCommand()
+        //ping command
+        [Command("ping", RunMode = RunMode.Async)]
+        [RequireBotPermission(GuildPermission.EmbedLinks)]
+        public async Task PingAsync()
         {
-            // initialize empty string builder for reply
-            var sb = new StringBuilder();
+           //build embed get user name latency and send
+            _embed.WithTitle($"Info for {Context.User.Username}");
+            _embed.WithDescription($"{Context.Client.Latency} ms");
+            _embed.WithColor(new Color(255, 255, 255));
+            await ReplyAsync("", false, _embed.Build()).ConfigureAwait(false);
 
-            // get user info from the Context
-            var user = Context.User;
-
-            // build out the reply
-            sb.AppendLine($"pong");
-
-            // send simple string reply
-            await ReplyAsync(sb.ToString());
         }
+        //set the bot status
         [Command("status")]
-        
         public async Task status([Remainder] string status = null)
         {
+            //check if im excuting the command
             if (Context.User.Id is 652248874873782272)
             {
+                //get the status string and set it.
                 await Context.Client.SetGameAsync(status);
+                //new embed builder and send what the bot status has been set to
                 var embed = new EmbedBuilder()
                                .WithColor(Color.Green)
                                .WithTitle($"Status")
@@ -63,14 +71,16 @@ namespace Discord_bot_pi.Modules
             }
             else
             {
+                //error messsage if the command is run by a non bot owner
                 await ReplyAsync("This message can only be run by the owner of the bot");
             }
         }
-
+        //set the bots prefix
         [Command("setprefix", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task setprefix(char prefix)
         {
+            //say to use the CsharpiEntities database
             using (var db = new CsharpiEntities())
             {
                 var currentPrefix = db.PrefixList.AsQueryable().Where(p => p.ServerId == (long)Context.Guild.Id).FirstOrDefault();
@@ -93,7 +103,7 @@ namespace Discord_bot_pi.Modules
             }
             await ReplyAsync($"Prefix for [**{Context.Guild.Name}**] changed to [**{prefix}**]");
         }
-       
+
         [Command("Setchannel", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task Channel(ITextChannel channel)
@@ -268,9 +278,10 @@ namespace Discord_bot_pi.Modules
                 await ReplyAsync(embed: embed.Build());
             }
         }
+        //makes the mute role
         [Command("muterole")]
         [RequireBotPermission(GuildPermission.ManageRoles)]
-        [RequireUserPermission(GuildPermission.ManageRoles, ErrorMessage = "You don't have the permission to unmute members!")]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
         public async Task muterole()
         {
             bool rExist = false;
@@ -303,11 +314,23 @@ namespace Discord_bot_pi.Modules
                         OverwritePermissions.DenyAll(channel).Modify(
                         viewChannel: PermValue.Allow, readMessageHistory: PermValue.Allow)
                         );
+                        var embed = new EmbedBuilder()
+                                  .WithDescription("I Have made the Muterole Muted")
+                                  .WithColor(Color.Red)
+                                  .WithTitle($"mute role");
+
+                        await ReplyAsync(embed: embed.Build());
                     }
                 }
                 catch (Exception)
                 {
                     //handel error if occures
+                    var embed = new EmbedBuilder()
+                                  .WithDescription("Something Went wrong do i have the correct permissions?")
+                                  .WithColor(Color.Red)
+                                  .WithTitle($"mute role");
+
+                    await ReplyAsync(embed: embed.Build());
                 }
             }
             else
@@ -347,6 +370,7 @@ namespace Discord_bot_pi.Modules
             }
         }
         [Command("Help", RunMode = RunMode.Async)]
+        [Alias("h")]
         public async Task Help()
         {
             var Help = new EmbedFieldBuilder()
@@ -417,6 +441,7 @@ namespace Discord_bot_pi.Modules
 
         }
         [Command("Disablediscordlogs", RunMode = RunMode.Async)]
+        [Summary("Disables DiscordLogs")]
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task Disablediscordlogs()
         {
@@ -471,7 +496,7 @@ namespace Discord_bot_pi.Modules
                 }
                 await db.SaveChangesAsync();
             }
-            
+
             await ReplyAsync($"AntiIp for [**{Context.Guild.Name}**] Is now [**enabled**]");
         }
         [Command("Disable", RunMode = RunMode.Async)]
@@ -503,6 +528,26 @@ namespace Discord_bot_pi.Modules
 
             await ReplyAsync($"AntiIp for [**{Context.Guild.Name}**] Is now [**Disabled**]");
         }
+        [Command("stats")]
+        public async Task stats()
+        {
+
+            if (Context.User.Id is 652248874873782272)
+            {
+                string RAM = Info.Ram;
+                string CPU = Info.Cpu;
+
+
+                await ReplyAsync($"Ram usage is {RAM} and the cpu usage is {CPU}");
+            }
+            else
+            {
+                await ReplyAsync("This message can only be run by the owner of the bot");
+            }
+
+        }
+
+
 
 
     }

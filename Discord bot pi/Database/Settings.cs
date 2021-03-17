@@ -12,6 +12,7 @@ namespace Discord_bot_pi.Database
         public long ServerId { get; set; }
         public string ServerName { get; set; }
         public ulong LogsChannelId { get; set; }
+
         public long SetById { get; set; }
         public bool Enabled { get; set; }
         public int punishment { get; set; }

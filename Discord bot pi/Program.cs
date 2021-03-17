@@ -64,14 +64,16 @@ namespace Discord_bot_pi
                 // setup logging and the ready event
                 services.GetRequiredService<LoggingService>();
                 services.GetRequiredService<DatabaseService>();
+                services.GetRequiredService<Info>();
+                services.GetRequiredService<MessageCheck>();
 
                 // this is where we get the Token value from the configuration file, and start the bot
                 await client.LoginAsync(TokenType.Bot, _config["Token"]);
                 await client.StartAsync();
-                
+
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
-                
+
 
                 await Task.Delay(-1);
             }
@@ -86,7 +88,7 @@ namespace Discord_bot_pi
         private Task ReadyAsync()
         {
             Console.WriteLine($"Connected as -> [{_client.CurrentUser}] ");
-            
+
 
             return Task.CompletedTask;
         }
@@ -105,6 +107,8 @@ namespace Discord_bot_pi
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton<DatabaseService>()
+                .AddSingleton<Info>()
+                .AddSingleton<MessageCheck>()
                 .AddSingleton<InteractiveService>()
                 .AddDbContext<CsharpiEntities>()
 
