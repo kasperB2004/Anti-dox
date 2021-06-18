@@ -18,38 +18,30 @@ using Discord_bot_pi.Database;
 using Discord.WebSocket;
 using RestSharp;
 using Discord.Net;
+using Discord_bot_pi.CustomPreattributes;
 namespace Discord_bot_pi.Modules
 {
-    public class SpecialCommand : ModuleBase
+    public class OwnerCommands : ModuleBase
     {
 
         private readonly IConfiguration _config;
         private readonly IServiceProvider _services;
-        public SpecialCommand(IServiceProvider services)
+        public OwnerCommands(IServiceProvider services)
         {
             _config = services.GetRequiredService<IConfiguration>();
             _services = services;
         }
         [Command("numservers")]
+        [RequireTeamOwner]
         public async Task GetNumGuilds()
         {
-
-            if (Context.User.Id is 652248874873782272)
-            {
                 var numGuilds = await Context.Client.GetGuildsAsync();
                 await ReplyAsync($"I am connected to {numGuilds.Count()} guilds!");
-            }
-            else
-            {
-                await ReplyAsync("This message can only be run by the owner of the bot");
-            }
-
         }
-        [Command("Notimplemented")]
+        [Command("NumUsers")]
+        [RequireTeamOwner]
         public async Task Stats()
         {
-            if (Context.User.Id is 652248874873782272)
-            {
 
                 const string ClientSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0IjoxLCJpZCI6Ijc5MTk2NDY0MjIzNDQ2NjMxNiIsImlhdCI6MTYxNDYyNDE0OX0.S7YA0cCywPtJGKNNpwcXA6azZh-O2Rrh7uQl3OfkaIA";
 
@@ -71,11 +63,21 @@ namespace Discord_bot_pi.Modules
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
                 await ReplyAsync($"I am connected to {numGuilds.Count()} guilds! and {totalUsers} Users use me !");
-            }
-            else
-            {
-                await ReplyAsync("This message can only be run by the owner of the bot");
-            }
+        }
+        [Command("Restart")]
+        [RequireTeamOwner]
+        public async Task restart()
+        {                // Starts a new instance of the program itself
+                System.Diagnostics.Process.Start(System.AppDomain.CurrentDomain.FriendlyName);
+                // Closes the current process
+                Environment.Exit(0);
+        }
+        [Command("shutdown")]
+        [RequireTeamOwner]
+        public async Task shutdown()
+        {
+                // Closes the current process
+                Environment.Exit(0);
         }
 
     }

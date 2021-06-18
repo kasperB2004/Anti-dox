@@ -49,8 +49,22 @@ namespace Discord_bot_pi.Services
             // hook into these events with the methods provided below
             _discord.Ready += OnReadyAsync;
             _discord.JoinedGuild += OnJoinAsync;
+            _discord.UserJoined += _discord_UserJoined;
 
         }
+
+        private async Task _discord_UserJoined(SocketGuildUser arg)
+        {
+            if(arg.Guild.Id == 561600243834028033)
+            {
+                var movies = arg.Guild.GetRole(784428575822577697);
+                var serries = arg.Guild.GetRole(784428549871370241);
+                await arg.AddRoleAsync(movies);
+                await arg.AddRoleAsync(serries);
+            }
+
+        }
+
         //log that the module is loaded
         public Task OnReadyAsync()
         {

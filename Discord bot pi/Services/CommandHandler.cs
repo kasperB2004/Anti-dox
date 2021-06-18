@@ -12,6 +12,7 @@ using Discord.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Serilog;
 using Discord_bot_pi.Database;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +55,7 @@ namespace Discord_bot_pi.Services
         }
         // this class is where the magic starts, and takes actions upon receiving messages
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
-        {
+            {
 
             // ensures we don't process system/other bot messages
             if (!(rawMessage is SocketUserMessage message))
@@ -81,19 +82,19 @@ namespace Discord_bot_pi.Services
                 prefix = serverPrefix.Prefix;
 
             }
-           
+
             // determine if the message has a valid prefix, and adjust argPos based on prefix
             if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)))
             {
                 return;
             }
-            
+
 
 
 
             // execute command if one is found that matches
             await _commands.ExecuteAsync(context, argPos, _services);
-            
+
 
         }
         public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
@@ -101,22 +102,13 @@ namespace Discord_bot_pi.Services
             // if a command isn't found, log that info to console and exit this method
             if (!command.IsSpecified)
             {
-                _logger.LogError($"Command failed to execute for [{context.User.Username}] <-> [{result.ErrorReason}]!");
-                string vIn = _config["logs"];
-                ulong vOut = Convert.ToUInt64(vIn);
-
-                var logchannel = _client.GetChannel(vOut) as IMessageChannel;
-
-
-                return;
+                _logger.LogError($"[{context.Message.ToString()}] failed to execute for [{context.User.ToString()}] in [{context.Guild.Name}] for [{result.ErrorReason}]!");
+               return;
             }
             // log success to the console and exit this method
             if (result.IsSuccess)
             {
-                _logger.LogInformation($"Command [{command.Value.Name}] executed for [{context.User.Username}] on [{context.Guild.Name}]");
-                string vIn = _config["logs"];
-                ulong vOut = Convert.ToUInt64(vIn);
-
+                _logger.LogInformation($"Command [{context.Message.ToString()}] executed for [{context.User.Username}] on [{context.Guild.Name}] in [{context.Channel.Name}]");
 
                 return;
 
@@ -124,6 +116,7 @@ namespace Discord_bot_pi.Services
 
             // failure scenario, let's let the user know
             await context.Channel.SendMessageAsync($"Sorry, {context.User.Username}... something went wrong -> [{result}]!");
+
         }
         private PrefixList GetPrefix(long serverId)
         {
@@ -139,7 +132,7 @@ namespace Discord_bot_pi.Services
         }
 
 
-       
+
 
     }
 }

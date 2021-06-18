@@ -38,7 +38,7 @@ namespace Discord_bot_pi.Services
         // this method executes on the bot being connected/ready
         public Task OnReadyAsync()
         {
-            _logger.LogInformation($"Connected as -> [{_discord.CurrentUser}] :)");
+            _logger.LogInformation($"Connected as -> [{_discord.CurrentUser}]");
             _logger.LogInformation($"We are on [{_discord.Guilds.Count}] servers");
             _client.SetGameAsync(_config["Game"]);
             _client.SetStatusAsync(Discord.UserStatus.Online);

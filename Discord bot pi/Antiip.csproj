@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Discord_bot_pi</RootNamespace>
+    <AssemblyName>Antiip</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,31 +18,32 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="bin\Debug\net5.0\csharpi.db" />
     <None Include="bin\Debug\netcoreapp3.1\csharpi.db" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Discord.Addons.PassiveInteractive" Version="2.0.4" />
-    <PackageReference Include="Discord.Net" Version="2.3.0" />
-    <PackageReference Include="Discord.Net.Commands" Version="2.3.0" />
-    <PackageReference Include="Discord.Net.Core" Version="2.3.0" />
-    <PackageReference Include="Discord.Net.Rest" Version="2.3.0" />
-    <PackageReference Include="Discord.Net.WebSocket" Version="2.3.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.3">
+    <PackageReference Include="Discord.Net" Version="3.0.0-dev-20210617.3" />
+    <PackageReference Include="Discord.Net.Commands" Version="3.0.0-dev-20210617.3" />
+    <PackageReference Include="Discord.Net.Core" Version="3.0.0-dev-20210617.3" />
+    <PackageReference Include="Discord.Net.Rest" Version="3.0.0-dev-20210617.3" />
+    <PackageReference Include="Discord.Net.WebSocket" Version="3.0.0-dev-20210617.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.5.21301.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.5.21301.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="RestSharp" Version="106.11.7" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.5.21301.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0-preview.5.21301.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0-preview.5.21301.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.5.21301.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0-preview.5.21301.5" />
+    <PackageReference Include="RestSharp" Version="106.11.8-alpha.0.14" />
+    <PackageReference Include="Serilog" Version="2.10.1-dev-01315" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00229" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00920" />
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.linux" Version="1.1.14" />
   </ItemGroup>
 

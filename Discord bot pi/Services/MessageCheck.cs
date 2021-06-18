@@ -22,8 +22,6 @@ namespace Discord_bot_pi.Services
 {
     public class MessageCheck
     {
-        //bool for check if a check is true
-        private bool IsCheck;
         // setup fields to be set later in the constructor
         private readonly IConfiguration _config;
         private readonly CommandService _commands;
@@ -50,8 +48,6 @@ namespace Discord_bot_pi.Services
         }
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
         {
-            //set check false
-            IsCheck = false;
             //check if it isnt a dm or non user message
             if (!(rawMessage is SocketUserMessage message))
             {
@@ -82,34 +78,17 @@ namespace Discord_bot_pi.Services
                 var dotdot = Regex.Match(message2, @"\::");
                 var doxbin = Regex.Match(message2, @"https:\/\/doxbin\.org");
                 var email = Regex.Match(message2, theEmailPattern);
-                 var phone = Regex.Match(message2, @"(\+[0-9]{2}|\+[0-9]{2}\(0\)|\(\+[0-9]{2}\)\(0\)|00[0-9]{2}|0)([0-9]{9}|[0-9\-\s]{9,18})");
-                 string phonenumber2 = "";
-                 if (phone.Success)
-                 {
-                     string[] numbers = Regex.Split(message2, @"\D+");
-                     foreach (var phonenumber in numbers)
-                     {
-                         int number;
-                         if (int.TryParse(phonenumber, out number))
-                         {
-                             phonenumber2 = phonenumber2 + number;
-                         }
-                     }
-                     Console.WriteLine(phonenumber2);
-                 }
-
-                 //if theres a sucesfull match set IsCheck to true
-                if (match.Success || match2.Success || doxbin.Success || email.Success || phone.Success)
-                {
-                    IsCheck = true;
-                }
                 // if isCheck is true run the deletion and log it
-                if(IsCheck == true)
+                if (match.Success || match2.Success || doxbin.Success || email.Success )
                 {
-                    //if theres 2 :: dont do anything
+                    SocketGuildChannel mentionschannel = message.MentionedChannels as SocketGuildChannel;
+                    Console.WriteLine(mentionschannel);
+
+                    //if theres 2 : dont do anything
                     if (dotdot.Success)
                     {
 
+                        return;
                     }
                     //else delete message and log everything into strings into the database and punishment
                     else
@@ -198,7 +177,7 @@ namespace Discord_bot_pi.Services
 
                         await rawMessage.DeleteAsync();
                         var warning = new EmbedBuilder()
-                            .WithTitle("Naughty")
+                            .WithTitle("🚫")
                             .WithDescription($"U can't post that here {author}")
                             .WithColor(Color.Red);
                         await messageChannel.SendMessageAsync(embed: warning.Build());
@@ -249,39 +228,46 @@ namespace Discord_bot_pi.Services
             var Logchannel = GetLogChannel((ulong)guild);
             if (Logchannel != null && Logchannel.Enabled == true)
             {
+                try
+                {
+                    ISocketMessageChannel messageChannel = null;
+                    messageChannel = author.Guild.GetChannel((ulong)Logchannel.LogsChannelId) as ISocketMessageChannel;
+                    var User = new EmbedFieldBuilder()
+                        .WithName("User")
+                        .WithValue(author)
+                        .WithIsInline(true);
+                    var ID = new EmbedFieldBuilder()
+                        .WithName("ID")
+                        .WithValue(authorid)
+                        .WithIsInline(true);
+                    var Time = new EmbedFieldBuilder()
+                        .WithName("Time")
+                        .WithValue(time)
+                        .WithIsInline(true);
+                    var Punishment = new EmbedFieldBuilder()
+                        .WithName("Punishment")
+                        .WithValue(punishment)
+                        .WithIsInline(false);
+                    var Message = new EmbedFieldBuilder()
+                        .WithName("Message")
+                        .WithValue(ip)
+                        .WithIsInline(true);
+                    var embed = new EmbedBuilder()
+                        .AddField(User)
+                        .AddField(ID)
+                        .AddField(Time)
+                        .AddField(Punishment)
+                        .AddField(Message)
+                        .WithColor(Color.Red)
+                        .WithTitle($"Case #{servercaseNummer}");
+                    await messageChannel.TriggerTypingAsync();
+                    await messageChannel.SendMessageAsync(embed: embed.Build());
+                }
+                catch
+                {
+                    _logger.LogInformation("Some idiot forgot to place a file");
+                }
 
-                ISocketMessageChannel messageChannel = null;
-                messageChannel = author.Guild.GetChannel((ulong)Logchannel.LogsChannelId) as ISocketMessageChannel;
-                var User = new EmbedFieldBuilder()
-                    .WithName("User")
-                    .WithValue(author)
-                    .WithIsInline(true);
-                var ID = new EmbedFieldBuilder()
-                    .WithName("ID")
-                    .WithValue(authorid)
-                    .WithIsInline(true);
-                var Time = new EmbedFieldBuilder()
-                    .WithName("Time")
-                    .WithValue(time)
-                    .WithIsInline(true);
-                var Punishment = new EmbedFieldBuilder()
-                    .WithName("Punishment")
-                    .WithValue(punishment)
-                    .WithIsInline(false);
-                var Message = new EmbedFieldBuilder()
-                    .WithName("Message")
-                    .WithValue(ip)
-                    .WithIsInline(true);
-                var embed = new EmbedBuilder()
-                    .AddField(User)
-                    .AddField(ID)
-                    .AddField(Time)
-                    .AddField(Punishment)
-                    .AddField(Message)
-                    .WithColor(Color.Red)
-                    .WithTitle($"Case #{servercaseNummer}");
-                await messageChannel.TriggerTypingAsync();
-                await messageChannel.SendMessageAsync(embed: embed.Build());
 
 
             }

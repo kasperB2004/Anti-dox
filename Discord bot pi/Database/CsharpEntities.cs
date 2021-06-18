@@ -6,7 +6,7 @@ namespace Discord_bot_pi.Database
 {
     public partial class CsharpiEntities : DbContext
     {
-       
+
         public virtual DbSet<PrefixList> PrefixList { get; set; }
         public virtual DbSet<logs> Logs { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }

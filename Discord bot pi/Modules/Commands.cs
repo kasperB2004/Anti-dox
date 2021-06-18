@@ -50,7 +50,11 @@ namespace Discord_bot_pi.Modules
             _embed.WithTitle($"Info for {Context.User.Username}");
             _embed.WithDescription($"{Context.Client.Latency} ms");
             _embed.WithColor(new Color(255, 255, 255));
-            await ReplyAsync("", false, _embed.Build()).ConfigureAwait(false);
+            MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+            AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+            await ReplyAsync("", false,_embed.Build(),null, allowed, msg).ConfigureAwait(false);
+
+
 
         }
         //set the bot status
@@ -67,7 +71,9 @@ namespace Discord_bot_pi.Modules
                                .WithColor(Color.Green)
                                .WithTitle($"Status")
                                .WithDescription($"The bot status has been set to `playing {status}`");
-                await ReplyAsync(embed: embed.Build());
+                MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+                AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+                await ReplyAsync("", false, _embed.Build(), null, allowed, msg).ConfigureAwait(false);
             }
             else
             {
@@ -152,7 +158,9 @@ namespace Discord_bot_pi.Modules
                   .WithDescription("The channel provided is not in this guild")
                   .WithColor(Color.Red)
                   .WithTitle($"Error");
-                await ReplyAsync(embed: embed.Build());
+                MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+                AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+                await ReplyAsync("", false, embed.Build(), null, allowed, msg).ConfigureAwait(false);
             }
 
         }
@@ -238,6 +246,7 @@ namespace Discord_bot_pi.Modules
             }
 
         }
+
         [Command("Case", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.BanMembers)]
         public async Task Case(int Case)
@@ -275,7 +284,9 @@ namespace Discord_bot_pi.Modules
                     .AddField(Message)
                     .WithColor(Color.Red)
                     .WithTitle($"Case #{logs.ServerCase}");
-                await ReplyAsync(embed: embed.Build());
+                MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+                AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+                await ReplyAsync("", false, embed.Build(), null, allowed, msg).ConfigureAwait(false);
             }
         }
         //makes the mute role
@@ -314,13 +325,17 @@ namespace Discord_bot_pi.Modules
                         OverwritePermissions.DenyAll(channel).Modify(
                         viewChannel: PermValue.Allow, readMessageHistory: PermValue.Allow)
                         );
-                        var embed = new EmbedBuilder()
+                        
+
+                        
+                    }
+                    var embed = new EmbedBuilder()
                                   .WithDescription("I Have made the Muterole Muted")
                                   .WithColor(Color.Red)
                                   .WithTitle($"mute role");
-
-                        await ReplyAsync(embed: embed.Build());
-                    }
+                    MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+                    AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+                    await ReplyAsync("", false, embed.Build(), null, allowed, msg).ConfigureAwait(false);
                 }
                 catch (Exception)
                 {
@@ -366,7 +381,9 @@ namespace Discord_bot_pi.Modules
                 embed.Description = sb.ToString();
 
                 // send embed reply
-                await ReplyAsync(null, false, embed.Build());
+                MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+                AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+                await ReplyAsync("", false, embed.Build(), null, allowed, msg).ConfigureAwait(false);
             }
         }
         [Command("Help", RunMode = RunMode.Async)]
@@ -435,7 +452,9 @@ namespace Discord_bot_pi.Modules
                     .AddField(DisableDiscordlogs)
                     .WithColor(Color.Green)
                     .WithTitle($"Help menu");
-            await ReplyAsync(embed: embed.Build());
+            MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+            AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+            await ReplyAsync("", false, embed.Build(), null, allowed, msg).ConfigureAwait(false);
 
 
 
@@ -497,7 +516,7 @@ namespace Discord_bot_pi.Modules
                 await db.SaveChangesAsync();
             }
 
-            await ReplyAsync($"AntiIp for [**{Context.Guild.Name}**] Is now [**enabled**]");
+            await ReplyAsync($"Anti-Dox for [**{Context.Guild.Name}**] Is now [**enabled**]");
         }
         [Command("Disable", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
@@ -526,7 +545,7 @@ namespace Discord_bot_pi.Modules
                 await db.SaveChangesAsync();
             }
 
-            await ReplyAsync($"AntiIp for [**{Context.Guild.Name}**] Is now [**Disabled**]");
+            await ReplyAsync($"Anti-Dox for [**{Context.Guild.Name}**] Is now [**Disabled**]");
         }
         [Command("stats")]
         public async Task stats()
@@ -546,9 +565,5 @@ namespace Discord_bot_pi.Modules
             }
 
         }
-
-
-
-
     }
 }

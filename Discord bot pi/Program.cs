@@ -12,6 +12,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord.API;
 using Discord.Addons.Interactive;
+using Discord_bot_pi.dependencies;
+using Serilog.Sinks.SystemConsole.Themes;
+using Serilog.Sinks.SystemConsole;
 
 namespace Discord_bot_pi
 
@@ -25,23 +28,27 @@ namespace Discord_bot_pi
         private DiscordSocketClient _client;
         private static string _logLevel;
 
+
+
         private static void Main(string[] args = null)
         {
             if (args.Count() != 0)
             {
                 _logLevel = args[0];
             }
+
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File("logs/csharpi.log", rollingInterval: RollingInterval.Day)
-                .WriteTo.Console()
+                .WriteTo.Console(theme: Serilogtheme.DiscordMatrix)
                 .CreateLogger();
 
-
-             new Program().MainAsync().GetAwaiter().GetResult();
+            Console.Clear();
+            new Program().MainAsync().GetAwaiter().GetResult();
         }
 
         public Program()
         {
+
             // create the configuration
             var _builder = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
@@ -53,6 +60,8 @@ namespace Discord_bot_pi
 
         public async Task MainAsync()
         {
+            //clear console
+            Console.Clear();
             // call ConfigureServices to create the ServiceCollection/Provider for passing around the services
             using (var services = ConfigureServices())
             {
@@ -87,7 +96,7 @@ namespace Discord_bot_pi
 
         private Task ReadyAsync()
         {
-            Console.WriteLine($"Connected as -> [{_client.CurrentUser}] ");
+            Console.WriteLine("Connected as -> [{Username}] ", _client.CurrentUser.Username.ToString());
 
 
             return Task.CompletedTask;
@@ -103,7 +112,12 @@ namespace Discord_bot_pi
             var services = new ServiceCollection()
                 .AddSingleton(_config)
                 .AddSingleton<DiscordSocketClient>()
-                .AddSingleton<CommandService>()
+                .AddSingleton(new CommandService(new CommandServiceConfig
+                 {
+                     DefaultRunMode = RunMode.Async,
+                     CaseSensitiveCommands = false,
+                     ThrowOnError = false
+                }))
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton<DatabaseService>()

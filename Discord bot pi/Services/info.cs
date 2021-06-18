@@ -85,9 +85,9 @@ namespace Discord_bot_pi.Services
             //ram as proc
             Process proc = Process.GetCurrentProcess();
             //ram as bit's
-            Int64 value = proc.PrivateMemorySize64;
+            Int64 UsingRam = proc.PrivateMemorySize64;
             //ram with correct suffix
-            var ram = SizeSuffix(value);
+            var ram = SizeSuffix(UsingRam);
             //convert cpu to string
 
             Cpu = Convert.ToString(cpu);
@@ -97,7 +97,7 @@ namespace Discord_bot_pi.Services
             var installedMemory = gcMemoryInfo.TotalAvailableMemoryBytes;
             var physicalMemory = (double)installedMemory * 0.50 ;
             //check if the cpu or ram is above 50% before sending a email.
-            if(cpu >= 50 || value >=physicalMemory )
+            if(cpu >= 50 || UsingRam >=physicalMemory )
             {
                 //from adress which the email is sent from
                 var fromAddress = new MailAddress(_config["FromEmail"], "Bot");
@@ -160,14 +160,21 @@ namespace Discord_bot_pi.Services
         }
         private async Task<double> GetCpuUsageForProcess()
         {
+            //cuurret time
             var startTime = DateTime.UtcNow;
+            //get startcpu usage
             var startCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
+            //waitttttttttttttt
             await Task.Delay(500);
-
+            //get end time
             var endTime = DateTime.UtcNow;
+            //get end cpu usage
             var endCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
+            //get cpuused in ms
             var cpuUsedMs = (endCpuUsage - startCpuUsage).TotalMilliseconds;
+            //total time passed
             var totalMsPassed = (endTime - startTime).TotalMilliseconds;
+            //get total cpu usage
             var cpuUsageTotal = cpuUsedMs / (Environment.ProcessorCount * totalMsPassed);
             return Math.Round((cpuUsageTotal * 100), 2);
         }
