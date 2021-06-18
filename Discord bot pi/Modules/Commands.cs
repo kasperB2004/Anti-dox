@@ -14,16 +14,16 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using Discord_bot_pi.Database;
+using Anti_Dox.Database;
 using Discord.WebSocket;
-
+using Anti_Dox.CustomPreattributes;
 using Discord.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using Discord_bot_pi.Services;
+using Anti_Dox.Services;
 
 
-namespace Discord_bot_pi.Modules
+namespace Anti_Dox.Modules
 {
 
     public class Commands : ModuleBase<SocketCommandContext>
@@ -59,12 +59,10 @@ namespace Discord_bot_pi.Modules
         }
         //set the bot status
         [Command("status")]
+        [RequireTeamOwner]
         public async Task status([Remainder] string status = null)
         {
-            //check if im excuting the command
-            if (Context.User.Id is 652248874873782272)
-            {
-                //get the status string and set it.
+              //get the status string and set it.
                 await Context.Client.SetGameAsync(status);
                 //new embed builder and send what the bot status has been set to
                 var embed = new EmbedBuilder()
@@ -74,12 +72,7 @@ namespace Discord_bot_pi.Modules
                 MessageReference msg = new MessageReference(messageId: Context.Message.Id);
                 AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
                 await ReplyAsync("", false, _embed.Build(), null, allowed, msg).ConfigureAwait(false);
-            }
-            else
-            {
-                //error messsage if the command is run by a non bot owner
-                await ReplyAsync("This message can only be run by the owner of the bot");
-            }
+
         }
         //set the bots prefix
         [Command("setprefix", RunMode = RunMode.Async)]
@@ -325,9 +318,9 @@ namespace Discord_bot_pi.Modules
                         OverwritePermissions.DenyAll(channel).Modify(
                         viewChannel: PermValue.Allow, readMessageHistory: PermValue.Allow)
                         );
-                        
 
-                        
+
+
                     }
                     var embed = new EmbedBuilder()
                                   .WithDescription("I Have made the Muterole Muted")

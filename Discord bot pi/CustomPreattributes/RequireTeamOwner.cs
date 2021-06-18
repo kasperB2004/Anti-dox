@@ -14,16 +14,16 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using Discord_bot_pi.Database;
+using Anti_Dox.Database;
 using Discord.WebSocket;
 
 using Discord.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using Discord_bot_pi.Services;
+using Anti_Dox.Services;
 
 
-namespace Discord_bot_pi.CustomPreattributes
+namespace Anti_Dox.CustomPreattributes
 {
     public class RequireTeamOwner : PreconditionAttribute
     {

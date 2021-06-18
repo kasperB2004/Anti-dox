@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Discord_bot_pi.Migrations
+namespace Anti_Dox.Migrations
 {
     public partial class InitialCreate : Migration
     {

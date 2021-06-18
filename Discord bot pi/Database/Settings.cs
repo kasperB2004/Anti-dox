@@ -4,7 +4,7 @@ using System.Text;
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Discord_bot_pi.Database
+namespace Anti_Dox.Database
 {
     public class Settings
     {

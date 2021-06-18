@@ -1,8 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord_bot_pi.Database;
-using Discord_bot_pi.Services;
+using Anti_Dox.Database;
+using Anti_Dox.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,11 +12,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord.API;
 using Discord.Addons.Interactive;
-using Discord_bot_pi.dependencies;
+using Anti_Dox.dependencies;
 using Serilog.Sinks.SystemConsole.Themes;
 using Serilog.Sinks.SystemConsole;
 
-namespace Discord_bot_pi
+namespace Anti_Dox
 
 
 {

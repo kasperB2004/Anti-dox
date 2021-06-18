@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 using RestSharp;
 using System.Text;
-using Discord_bot_pi.Modules;
+using Anti_Dox.Modules;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -18,12 +18,12 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using Discord_bot_pi.Database;
+using Anti_Dox.Database;
 using System.Net.Http.Headers;
 using Discord.Net;
 using Microsoft.EntityFrameworkCore;
 
-namespace Discord_bot_pi.Services
+namespace Anti_Dox.Services
 {
     public class DatabaseService
     {

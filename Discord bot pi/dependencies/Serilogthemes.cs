@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace Discord_bot_pi.dependencies
+namespace Anti_Dox.dependencies
 {
     public static class Serilogthemes
     {

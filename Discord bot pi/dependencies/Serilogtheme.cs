@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace Discord_bot_pi.dependencies
+namespace Anti_Dox.dependencies
 {
     public class Serilogtheme : ConsoleTheme
     {

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace Discord_bot_pi.Services
+namespace Anti_Dox.Services
 {
     public class LoggingService
     {

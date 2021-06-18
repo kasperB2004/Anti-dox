@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace Discord_bot_pi.Database
+namespace Anti_Dox.Database
 {
     public partial class CsharpiEntities : DbContext
     {

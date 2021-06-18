@@ -14,12 +14,12 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using Discord_bot_pi.Database;
+using Anti_Dox.Database;
 using Discord.WebSocket;
 using RestSharp;
 using Discord.Net;
-using Discord_bot_pi.CustomPreattributes;
-namespace Discord_bot_pi.Modules
+using Anti_Dox.CustomPreattributes;
+namespace Anti_Dox.Modules
 {
     public class OwnerCommands : ModuleBase
     {

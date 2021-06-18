@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antiip", "Discord bot pi\Antiip.csproj", "{C4555FD9-6002-40A9-B5FE-1AF3E7063937}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anti-dox", "Discord bot pi\Anti-dox.csproj", "{C4555FD9-6002-40A9-B5FE-1AF3E7063937}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

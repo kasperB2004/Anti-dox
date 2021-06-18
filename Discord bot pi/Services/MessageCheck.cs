@@ -11,14 +11,14 @@ using Discord.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Discord_bot_pi.Database;
+using Anti_Dox.Database;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Text.RegularExpressions;
 
 
-namespace Discord_bot_pi.Services
+namespace Anti_Dox.Services
 {
     public class MessageCheck
     {
