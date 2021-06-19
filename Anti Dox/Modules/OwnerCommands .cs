@@ -82,8 +82,6 @@ namespace Anti_Dox.Modules
         public async Task Stats()
         {
 
-                 const string ClientSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0IjoxLCJpZCI6Ijc5MTk2NDY0MjIzNDQ2NjMxNiIsImlhdCI6MTYxNDYyNDE0OX0.S7YA0cCywPtJGKNNpwcXA6azZh-O2Rrh7uQl3OfkaIA";
-
                 var numGuilds = await Context.Client.GetGuildsAsync();
                 int totalUsers = 0;
                 foreach (var guild in numGuilds)
@@ -94,7 +92,7 @@ namespace Anti_Dox.Modules
                 var client = new RestClient("https://discordbotlist.com/api/v1/bots/791964642234466316/stats?id=791964642234466316");
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
-                request.AddHeader("Authorization", ClientSecret);
+                request.AddHeader("Authorization", _config["ClientSecret"]);
                 request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
                 request.AddHeader("Cookie", "__cfduid=d166f01e6e4f0e5742b98c1f5c6def1001614624469");
                 request.AddParameter("guilds", numGuilds.Count);
