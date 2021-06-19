@@ -338,7 +338,9 @@ namespace Anti_Dox.Modules
                                   .WithColor(Color.Red)
                                   .WithTitle($"mute role");
 
-                    await ReplyAsync(embed: embed.Build());
+                    MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+                    AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+                    await ReplyAsync("", false, embed.Build(), null, allowed, msg).ConfigureAwait(false);
                 }
             }
             else
@@ -348,7 +350,9 @@ namespace Anti_Dox.Modules
                                   .WithColor(Color.Red)
                                   .WithTitle($"mute role");
 
-                await ReplyAsync(embed: embed.Build());
+                MessageReference msg = new MessageReference(messageId: Context.Message.Id);
+                AllowedMentions allowed = new AllowedMentions(AllowedMentionTypes.None);
+                await ReplyAsync("", false, embed.Build(), null, allowed, msg).ConfigureAwait(false);
             }
 
         }

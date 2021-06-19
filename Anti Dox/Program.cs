@@ -43,6 +43,7 @@ namespace Anti_Dox
                 .CreateLogger();
 
             Console.Clear();
+            Console.Title = "Anti-Dox";
             new Program().MainAsync().GetAwaiter().GetResult();
         }
 

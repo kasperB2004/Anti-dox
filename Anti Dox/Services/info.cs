@@ -34,6 +34,7 @@ namespace Anti_Dox.Services
         static readonly string[] SizeSuffixes =
                    { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
         private Timer aTimer;
+        private Timer aTimer2;
         // declare the fields used later in this class
         private readonly ILogger _logger;
         private DiscordSocketClient _client;
@@ -77,9 +78,30 @@ namespace Anti_Dox.Services
             aTimer.AutoReset = true;
             //enable it
             aTimer.Enabled = true;
+            // Create a timer with a two second interval.
+            aTimer2 = new System.Timers.Timer(1000);
+            // Hook up the Elapsed event for the timer.
+            aTimer2.Elapsed += ATimer2_Elapsed; ;
+            //auto reset
+            aTimer2.AutoReset = true;
+            //enable it
+            aTimer2.Enabled = true;
         }
+        private  void ATimer2_Elapsed(Object sender, ElapsedEventArgs e)
+        {
+           
+            Task.Run(UpdateConsoleTitle);
+        }
+
+        static void UpdateConsoleTitle()
+        {
+            var elepasedtime = DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime();
+            Console.Title = $"Anti-Dox - {elepasedtime.Hours}:{elepasedtime.Minutes}:{elepasedtime.Seconds}";
+        }
+
         public async void OnTimedEventAsync(Object source, ElapsedEventArgs e)
         {
+
             //get cpu amount
             var cpu = await GetCpuUsageForProcess();
             //ram as proc
